@@ -621,7 +621,7 @@ export default function YouTubeStatsParser() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-50 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 mt-6 mb-8">
           <h1 className="text-4xl font-bold text-gray-900 flex items-center justify-center gap-2">
             <Video className="w-8 h-8 text-red-600" />
             YouTube Stat Tracker
@@ -700,8 +700,8 @@ export default function YouTubeStatsParser() {
                     </AlertDescription>
                   </Alert>
                 )}
-                <div className="text-sm text-gray-500 text-center">
-                  <p>To get your data:</p>
+                <div className="text-sm text-gray-500 text-left">
+                  <p className="font-bold">To get your data:</p>
                   <ol className="list-decimal list-inside mt-2 space-y-1">
                     <li>Go to Google Takeout (<a href="https://takeout.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">takeout.google.com</a>)</li>
                     <li>Deselect everything, then select only "YouTube and YouTube Music"</li>
@@ -721,6 +721,11 @@ export default function YouTubeStatsParser() {
               </Link>
               {" "}to learn how your data is handled.
             </p>
+            <p className="text-xs text-gray-500 mt-2">made by catt. check {" "}
+              <Link href="https://github.com/vn-nthh" className="text-red-600 hover:text-red-800 underline">
+                github
+              </Link>
+              {" "} for other projects.</p>
           </div>
           </>
         ) : (
