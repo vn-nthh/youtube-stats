@@ -52,7 +52,7 @@ export function GoogleTakeoutAuth({ onDataReceived }: GoogleTakeoutAuthProps) {
       // Configure OAuth client
       const client = window.google.accounts.oauth2.initTokenClient({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/dataportability.youtube.videos",
+        scope: "https://www.googleapis.com/auth/dataportability.myactivity.youtube",
         callback: (response: any) => {
           if (response.access_token) {
             setAccessToken(response.access_token)
@@ -205,7 +205,7 @@ export function GoogleTakeoutAuth({ onDataReceived }: GoogleTakeoutAuthProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Key className="w-5 h-5" />
-          Google Takeout Integration
+          Google Integration (EU only)
         </CardTitle>
         <CardDescription>Automatically download your YouTube data using Google's Data Portability API</CardDescription>
       </CardHeader>
