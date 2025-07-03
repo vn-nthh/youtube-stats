@@ -9,7 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-// import { GoogleTakeoutAuth } from "@/components/google-takeout-auth"
+import { GoogleTakeoutAuth } from "@/components/google-takeout-auth"
+import Link from "next/link"
 
 interface YouTubeEntry {
   header: string
@@ -627,7 +628,7 @@ export default function YouTubeStatsParser() {
           <p className="text-gray-600">Analyze your YouTube viewing habits with automatic data import</p>
         </div>
 
-        {/* <GoogleTakeoutAuth onDataReceived={handleGoogleTakeoutData} /> */}
+        <GoogleTakeoutAuth onDataReceived={handleGoogleTakeoutData} />
 
         {data.length === 0 || isLoading || isProcessingVideos ? (
           <Card>
@@ -707,6 +708,15 @@ export default function YouTubeStatsParser() {
                     <li>Choose "history" in the options</li>
                     <li>Download and extract the JSON file</li>
                   </ol>
+                </div>
+                <div className="text-center pt-4 border-t">
+                  <p className="text-xs text-gray-500">
+                    Your privacy is protected. Read our{" "}
+                    <Link href="/privacy" className="text-red-600 hover:text-red-800 underline">
+                      Privacy Policy
+                    </Link>
+                    {" "}to learn how your data is handled.
+                  </p>
                 </div>
               </div>
             </CardContent>
