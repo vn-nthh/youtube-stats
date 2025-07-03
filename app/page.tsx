@@ -596,6 +596,7 @@ export default function YouTubeStatsParser() {
       totalShorts,
       totalRegularVideos,
       totalRegularTime,
+      totalShortsTime,
       topRegularChannels,
       topShortsChannels,
       dailyStats,
@@ -628,17 +629,16 @@ export default function YouTubeStatsParser() {
           <p className="text-gray-600">Analyze your YouTube viewing habits with automatic data import</p>
         </div>
 
-        <GoogleTakeoutAuth onDataReceived={handleGoogleTakeoutData} />
-
-        {data.length === 0 || isLoading || isProcessingVideos ? (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Upload className="w-5 h-5" />
-                Upload Your Data
-              </CardTitle>
-              <CardDescription>Upload the JSON file from your YouTube data export (Google Takeout)</CardDescription>
-            </CardHeader>
+                {data.length === 0 || isLoading || isProcessingVideos ? (
+          <>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Upload className="w-5 h-5" />
+                  Upload Your Data
+                </CardTitle>
+                <CardDescription>Upload the JSON file from your YouTube data export (Google Takeout)</CardDescription>
+              </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <input
@@ -703,24 +703,26 @@ export default function YouTubeStatsParser() {
                 <div className="text-sm text-gray-500 text-center">
                   <p>To get your data:</p>
                   <ol className="list-decimal list-inside mt-2 space-y-1">
-                    <li>Go to Google Takeout (takeout.google.com)</li>
-                    <li>Select "YouTube and YouTube Music"</li>
+                    <li>Go to Google Takeout (<a href="https://takeout.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">takeout.google.com</a>)</li>
+                    <li>Deselect everything, then select only "YouTube and YouTube Music"</li>
                     <li>Choose "history" in the options</li>
                     <li>Download and extract the JSON file</li>
                   </ol>
                 </div>
-                <div className="text-center pt-4 border-t">
-                  <p className="text-xs text-gray-500">
-                    Your privacy is protected. Read our{" "}
-                    <Link href="/privacy" className="text-red-600 hover:text-red-800 underline">
-                      Privacy Policy
-                    </Link>
-                    {" "}to learn how your data is handled.
-                  </p>
-                </div>
               </div>
             </CardContent>
           </Card>
+          <GoogleTakeoutAuth onDataReceived={handleGoogleTakeoutData} />
+          <div className="text-center pt-4">
+            <p className="text-xs text-gray-500">
+              Your privacy is protected. Read our{" "}
+              <Link href="/privacy" className="text-red-600 hover:text-red-800 underline">
+                Privacy Policy
+              </Link>
+              {" "}to learn how your data is handled.
+            </p>
+          </div>
+          </>
         ) : (
           <Card>
             <CardHeader>
@@ -743,7 +745,7 @@ export default function YouTubeStatsParser() {
                   <div className="text-3xl font-bold text-orange-600">{stats?.totalShorts.toLocaleString()}</div>
                   <div className="text-sm text-gray-600">YouTube Shorts</div>
                   <div className="text-xs text-gray-500">
-                    {Math.round((stats?.totalShorts / stats?.totalVideos) * 100)}% of total videos
+                    {stats?.totalShorts && stats?.totalVideos ? Math.round((stats.totalShorts / stats.totalVideos) * 100) : 0}% of total videos
                   </div>
                 </div>
                 <div className="text-center space-y-2">
@@ -878,7 +880,8 @@ export default function YouTubeStatsParser() {
                                       className="w-full h-full object-cover"
                                       onError={(e) => {
                                         e.currentTarget.style.display = "none"
-                                        e.currentTarget.nextElementSibling.style.display = "flex"
+                                        const sibling = e.currentTarget.nextElementSibling as HTMLElement
+                                        if (sibling) sibling.style.display = "flex"
                                       }}
                                     />
                                   )
@@ -942,7 +945,8 @@ export default function YouTubeStatsParser() {
                                       className="w-full h-full object-cover"
                                       onError={(e) => {
                                         e.currentTarget.style.display = "none"
-                                        e.currentTarget.nextElementSibling.style.display = "flex"
+                                        const sibling = e.currentTarget.nextElementSibling as HTMLElement
+                                        if (sibling) sibling.style.display = "flex"
                                       }}
                                     />
                                   )
