@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { GoogleTakeoutAuth } from "@/components/google-takeout-auth"
+import Aurora from "@/components/aurora"
+
 import Link from "next/link"
 
 interface YouTubeEntry {
@@ -619,14 +621,24 @@ export default function YouTubeStatsParser() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-50 p-4">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen p-4 relative">
+      {/* Aurora Background Effect */}
+      <div className="fixed inset-0 z-0 opacity-100 pointer-events-none">
+        <Aurora 
+          colorStops={["#ff295e", "#f5ff66", "#d47216"]} 
+          amplitude={stats ? 1.5 : 1.2} 
+          blend={0.4} 
+          speed={stats ? 0.4 : 0.3} 
+        />
+      </div>
+      
+      <div className="max-w-6xl mx-auto space-y-6 relative z-10">
         <div className="text-center space-y-2 mt-6 mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 flex items-center justify-center gap-2">
-            <Video className="w-8 h-8 text-red-600" />
+          <h1 className="text-4xl font-bold text-foreground flex items-center justify-center gap-2">
+                                            <Video className="w-8 h-8 text-primary" />
             YouTube Stat Tracker
           </h1>
-          <p className="text-gray-600">Analyze your YouTube viewing habits with automatic data import</p>
+          <p className="text-muted-foreground">Analyze your YouTube viewing habits with automatic data import</p>
         </div>
 
                 {data.length === 0 || isLoading || isProcessingVideos ? (
@@ -645,17 +657,17 @@ export default function YouTubeStatsParser() {
                   type="file"
                   accept=".json"
                   onChange={handleFileUpload}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                  className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
                   disabled={isLoading || isProcessingVideos}
                 />
                 {isLoading && (
-                  <div className="flex items-center gap-2 text-center text-gray-600">
+                  <div className="flex items-center gap-2 text-center text-muted-foreground">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Processing your data...
                   </div>
                 )}
                 {isProcessingVideos && (
-                  <div className="flex items-center gap-2 text-center text-blue-600">
+                  <div className="flex items-center gap-2 text-center text-primary">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Fetching video details from YouTube API...
                   </div>
@@ -682,7 +694,7 @@ export default function YouTubeStatsParser() {
                                 href="https://console.developers.google.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-600 underline"
+                                className="text-primary underline hover:text-primary/80"
                               >
                                 Google Cloud Console
                               </a>
@@ -693,17 +705,17 @@ export default function YouTubeStatsParser() {
                             <li>Copy the API key to your .env.local file</li>
                           </ol>
                         </div>
-                        <div className="text-sm text-gray-600">
+                        <div className="body-text text-sm">
                           Stats will show video counts instead of watch time without API access.
                         </div>
                       </div>
                     </AlertDescription>
                   </Alert>
                 )}
-                <div className="text-sm text-gray-500 text-left">
+                <div className="body-text text-sm text-left">
                   <p className="font-bold">To get your data:</p>
                   <ol className="list-decimal list-inside mt-2 space-y-1">
-                    <li>Go to Google Takeout (<a href="https://takeout.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">takeout.google.com</a>)</li>
+                    <li>Go to Google Takeout (<a href="https://takeout.google.com" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">takeout.google.com</a>)</li>
                     <li>Deselect everything, then select only "YouTube and YouTube Music"</li>
                     <li>Choose "history" in the options</li>
                     <li>Download and extract the JSON file</li>
@@ -714,15 +726,15 @@ export default function YouTubeStatsParser() {
           </Card>
           <GoogleTakeoutAuth onDataReceived={handleGoogleTakeoutData} />
           <div className="text-center pt-4">
-            <p className="text-xs text-gray-500">
+            <p className="body-text text-xs">
               Your privacy is protected. Read our{" "}
-              <Link href="/privacy" className="text-red-600 hover:text-red-800 underline">
+              <Link href="/privacy" className="text-primary hover:text-primary/80 underline">
                 Privacy Policy
               </Link>
               {" "}to learn how your data is handled.
             </p>
-            <p className="text-xs text-gray-500 mt-2">made by catt. check {" "}
-              <Link href="https://github.com/vn-nthh" className="text-red-600 hover:text-red-800 underline">
+            <p className="body-text text-xs mt-2">made by catt. check {" "}
+              <Link href="https://github.com/vn-nthh" className="text-primary hover:text-primary/80 underline">
                 github
               </Link>
               {" "} for other projects.</p>
@@ -740,23 +752,23 @@ export default function YouTubeStatsParser() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-red-600">{stats?.totalVideos.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">Total Videos Watched</div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-3xl font-bold text-primary">{stats?.totalVideos.toLocaleString()}</div>
+                  <div className="text-sm text-foreground">Total Videos Watched</div>
+                  <div className="text-xs text-muted-foreground">
                     From {stats?.dateRange.start.toLocaleDateString()} to {stats?.dateRange.end.toLocaleDateString()}
                   </div>
                 </div>
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-orange-600">{stats?.totalShorts.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">YouTube Shorts</div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-3xl font-bold text-primary">{stats?.totalShorts.toLocaleString()}</div>
+                  <div className="text-sm text-foreground">YouTube Shorts</div>
+                  <div className="text-xs text-muted-foreground">
                     {stats?.totalShorts && stats?.totalVideos ? Math.round((stats.totalShorts / stats.totalVideos) * 100) : 0}% of total videos
                   </div>
                 </div>
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-blue-600">{stats?.mostActiveTimeframe[0]}</div>
-                  <div className="text-sm text-gray-600">Most Active Time</div>
-                  <div className="text-xs text-gray-500">{stats?.mostActiveTimeframe[1]} videos during this period</div>
+                  <div className="text-3xl font-bold text-primary">{stats?.mostActiveTimeframe[0]}</div>
+                  <div className="text-sm text-foreground">Most Active Time</div>
+                  <div className="text-xs text-muted-foreground">{stats?.mostActiveTimeframe[1]} videos during this period</div>
                 </div>
               </div>
             </CardContent>
@@ -792,7 +804,7 @@ export default function YouTubeStatsParser() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Regular Videos</CardTitle>
-                    <Video className="h-4 w-4 text-red-600" />
+                    <Video className="h-4 w-4 text-primary" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.totalRegularVideos.toLocaleString()}</div>
@@ -807,10 +819,10 @@ export default function YouTubeStatsParser() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">YouTube Shorts</CardTitle>
-                    <Video className="h-4 w-4 text-orange-600" />
+                    <Video className="h-4 w-4 text-accent" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{stats.totalShorts.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-primary">{stats.totalShorts.toLocaleString()}</div>
                     <p className="text-xs text-muted-foreground">
                       {stats.totalShortsTime > 0
                         ? formatDuration(stats.totalShortsTime)
@@ -822,7 +834,7 @@ export default function YouTubeStatsParser() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">YouTube Music</CardTitle>
-                    <Music className="h-4 w-4 text-red-600" />
+                    <Music className="h-4 w-4 text-primary" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.youtubeMusicVideos.toLocaleString()}</div>
@@ -861,7 +873,7 @@ export default function YouTubeStatsParser() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Video className="w-5 h-5 text-red-600" />
+                      <Video className="w-5 h-5 text-primary" />
                       Top Channels - Regular Videos
                     </CardTitle>
                     <CardDescription>Channels ranked by number of regular videos watched</CardDescription>
@@ -869,10 +881,10 @@ export default function YouTubeStatsParser() {
                   <CardContent>
                     <div className="space-y-4">
                       {stats.topRegularChannels.map((channel, index) => (
-                        <div key={channel.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div key={channel.name} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                           <div className="flex items-center gap-3">
                             <Badge variant="secondary">#{index + 1}</Badge>
-                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                            <div className="w-10 h-10 rounded-full bg-muted-foreground/20 flex items-center justify-center overflow-hidden">
                               {(() => {
                                 const channelId = extractChannelId(channel.url)
                                 const channelDetail = channelId ? channelDetails.get(channelId) : null
@@ -895,7 +907,7 @@ export default function YouTubeStatsParser() {
                                 return null
                               })()}
                               <div
-                                className="w-full h-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center text-red-600 font-semibold text-sm border-2 border-red-200"
+                                className="w-full h-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm border-2 border-primary/30"
                                 style={{
                                   display: (() => {
                                     const channelId = extractChannelId(channel.url)
@@ -909,11 +921,11 @@ export default function YouTubeStatsParser() {
                             </div>
                             <div>
                               <div className="font-medium">{channel.name}</div>
-                              <div className="text-sm text-gray-600">{channel.videoCount} videos</div>
+                              <div className="text-sm text-muted-foreground">{channel.videoCount} videos</div>
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-sm text-gray-600">
+                            <div className="text-sm text-muted-foreground">
                               {Math.round((channel.videoCount / stats.totalRegularVideos) * 100)}% of regular videos
                             </div>
                           </div>
@@ -926,7 +938,7 @@ export default function YouTubeStatsParser() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Video className="w-5 h-5 text-orange-600" />
+                      <Video className="w-5 h-5 text-accent" />
                       Top Channels - Shorts
                     </CardTitle>
                     <CardDescription>Channels ranked by number of shorts watched</CardDescription>
@@ -934,10 +946,10 @@ export default function YouTubeStatsParser() {
                   <CardContent>
                     <div className="space-y-4">
                       {stats.topShortsChannels.map((channel, index) => (
-                        <div key={channel.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div key={channel.name} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                           <div className="flex items-center gap-3">
                             <Badge variant="secondary">#{index + 1}</Badge>
-                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                            <div className="w-10 h-10 rounded-full bg-muted-foreground/20 flex items-center justify-center overflow-hidden">
                               {(() => {
                                 const channelId = extractChannelId(channel.url)
                                 const channelDetail = channelId ? channelDetails.get(channelId) : null
@@ -960,7 +972,7 @@ export default function YouTubeStatsParser() {
                                 return null
                               })()}
                               <div
-                                className="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-orange-600 font-semibold text-sm border-2 border-orange-200"
+                                className="w-full h-full bg-accent/20 flex items-center justify-center text-accent font-semibold text-sm border-2 border-accent/30"
                                 style={{
                                   display: (() => {
                                     const channelId = extractChannelId(channel.url)
@@ -974,11 +986,11 @@ export default function YouTubeStatsParser() {
                             </div>
                             <div>
                               <div className="font-medium">{channel.name}</div>
-                              <div className="text-sm text-gray-600">{channel.shortCount} shorts</div>
+                              <div className="text-sm text-muted-foreground">{channel.shortCount} shorts</div>
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-sm text-gray-600">
+                            <div className="text-sm text-muted-foreground">
                               {Math.round((channel.shortCount / stats.totalShorts) * 100)}% of shorts
                             </div>
                           </div>
@@ -1001,8 +1013,8 @@ export default function YouTubeStatsParser() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-center space-y-2">
-                      <div className="text-3xl font-bold text-red-600">{formatHour(stats.mostActiveHour.hour)}</div>
-                      <div className="text-sm text-gray-600">{stats.mostActiveHour.count} videos watched</div>
+                      <div className="text-3xl font-bold text-primary">{formatHour(stats.mostActiveHour.hour)}</div>
+                      <div className="text-sm text-muted-foreground">{stats.mostActiveHour.count} videos watched</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -1025,7 +1037,7 @@ export default function YouTubeStatsParser() {
                                 value={(stat.count / stats.mostActiveHour.count) * 100}
                                 className="h-2 flex-1"
                               />
-                              <span className="text-sm text-gray-600 w-8">{stat.count}</span>
+                              <span className="text-sm text-muted-foreground w-8">{stat.count}</span>
                             </div>
                           </div>
                         ))}
@@ -1043,9 +1055,9 @@ export default function YouTubeStatsParser() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-center space-y-2">
-                    <p className="text-sm text-gray-600">You usually watch videos during the</p>
-                    <div className="text-2xl font-bold text-red-600">{stats.mostActiveTimeframe[0]}</div>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">You usually watch videos during the</p>
+                    <div className="text-2xl font-bold text-primary">{stats.mostActiveTimeframe[0]}</div>
+                    <p className="text-sm text-muted-foreground">
                       {stats.mostActiveTimeframe[1]} videos watched during this period
                     </p>
                   </div>
@@ -1063,14 +1075,14 @@ export default function YouTubeStatsParser() {
                 <CardContent>
                   <div className="space-y-4">
                     {stats.dailyStats.map((day) => (
-                      <div key={day.date} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div key={day.date} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                         <div className="font-medium">{day.date}</div>
                         <div className="flex items-center gap-2">
                           <Progress
                             value={(day.count / Math.max(...stats.dailyStats.map((d) => d.count))) * 100}
                             className="h-2 w-32"
                           />
-                          <span className="text-sm text-gray-600 w-12">{day.count}</span>
+                          <span className="text-sm text-muted-foreground w-12">{day.count}</span>
                         </div>
                       </div>
                     ))}
@@ -1085,11 +1097,11 @@ export default function YouTubeStatsParser() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-gray-600">First Entry</div>
+                      <div className="text-sm text-muted-foreground">First Entry</div>
                       <div className="font-medium">{stats.dateRange.start.toLocaleDateString()}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-gray-600">Last Entry</div>
+                      <div className="text-sm text-muted-foreground">Last Entry</div>
                       <div className="font-medium">{stats.dateRange.end.toLocaleDateString()}</div>
                     </div>
                   </div>

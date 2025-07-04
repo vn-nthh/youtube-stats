@@ -256,7 +256,7 @@ export function GoogleTakeoutAuth({ onDataReceived }: GoogleTakeoutAuthProps) {
                           href="https://console.developers.google.com/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 underline"
+                          className="text-primary underline"
                         >
                           Google Cloud Console
                         </a>
@@ -274,7 +274,7 @@ export function GoogleTakeoutAuth({ onDataReceived }: GoogleTakeoutAuthProps) {
           </Alert>
         )}
 
-        <div className="text-sm text-gray-600 space-y-2">
+        <div className="body-text text-sm space-y-2">
           <p>
             <strong>What this does:</strong>
           </p>
